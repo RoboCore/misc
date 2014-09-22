@@ -1,53 +1,27 @@
 <!doctype html>
 <html lang="en" ng-app>
+  <head>
+    <meta charset="utf-8">
+    <title>Arduino + PWM</title>
 
-<head>
-	<meta charset="utf-8">
-	
-	<title>Arduino + PWM</title>
+    <script src="http://code.angularjs.org/1.2.6/angular.min.js"></script>
+    <script>
+      function ArduinoCtrl($scope, $http) {
+        $scope.setPWM = function (analogID, value) {
+          console.log(value);
+          var url = "http://192.168.0.148/arduino/PWM/" + analogID + "/" + value;
+          $http.get(url);
+        }
+      }
+    </script>
+  </head>
 
-	<script src="http://code.angularjs.org/1.2.6/angular.min.js"></script>
-</head>
-
-<script>
-
-       	function ArduinoCtrl($scope,
-                              $http){
-
-    		$scope.time = 0; //sets start value
-
-		$scope.setPWM = function(analogID, value) {
-                var url = "http://192.168.0.148/arduino/PWM/" + analogID + "/" + value
-                $http.get(url);
-
-		/*var delay=250;//1 seconds
-    		setTimeout(function(){
-			//wait
-    			//your code to be executed after 1 seconds
-    		},delay); */	        	
-
-	}
-
-    }
-    
-    
-	function printOnConsole(value){
-        console.log(value);
-    }
-
-</script>
-
-<body>
-
-   <div ng-controller="ArduinoCtrl" class="container">
-	<center>
-    	<input type="range" ng-model="time" min="0" max="255" step="1" style="width: 140px" class="ng-valid ng-dirty" ng-change="setPWM(13, time)">
-    	<br><br>
-    	<span ng-bind="time" class="ng-binding">0</span>
- 
-
-	</center>
-   </div>
-
-</body>
+  <body>
+    <div ng-controller="ArduinoCtrl" class="container">
+      <center>
+        <input type="range" min="0" max="255" step="1" ng-model="value" ng-init="value = 0" ng-mouseup="setPWM(13, value)">
+        <p>{{ value }}</p>
+      </center>
+    </div>
+  </body>
 </html>
